@@ -25,13 +25,26 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+  
+
+    const coffeeCollaction = client.db('coffeeDB').collection('coffee')
+
+    app.get('/coffee', async(req, res) => {
+        const result = await coffeeCollaction.find().toArray();
+        res.send(result)
+    })
+
+
+ //post coffee store DB
+ app.post('/coffee', async(req, res) => {
+     const newCoffee = req.body;
+     console.log(newCoffee)
+     const result = await coffeeCollaction.insertOne(newCoffee)
+     res.send(result)
+ })
 
 
 
-
-
-
-    
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
